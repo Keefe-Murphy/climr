@@ -47,7 +47,7 @@ load_climr <- function(type = c("GLB", "NH", "SH")) {
     mutate(year = Year, # note: changing to lowercase for the sake of tidyness
            temp = `J-D`, # note: use of backticks to extract numbers rather than characters
            x = year) |> # note: using x here to have a generic "x" for use with modelling later
-    select(year, temp, x) %>%
+    select(year, temp, x) |>
     arrange(x)
 
   ## Sort out the monthly data

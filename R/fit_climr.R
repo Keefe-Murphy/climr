@@ -32,8 +32,7 @@ fit <- function(obj,
 #' @export
 fit.climr <- function(obj,
                       data_type = c("yearly", "quarterly", "monthly"),
-                      fit_type = c("lm", "loess", "smooth.spline"),
-                      ...) {
+                      fit_type = c("lm", "loess", "smooth.spline")) {
 
   ## Find out which data set to use
   data_type <- match.arg(data_type)
