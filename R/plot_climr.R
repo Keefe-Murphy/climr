@@ -6,7 +6,7 @@
 #' @param time_grid An optional time grid over which to produce fitted values of the model.
 #' @param ... Catches unused arguments to \code{plot} (not currently implemented).
 #'
-#' @return Nothing, just a nice ggplot.
+#' @return Just a nice ggplot, returned invisibly to enable further modification (see examples).
 #'
 #' @export
 #' @importFrom ggplot2 "aes" "geom_line" "geom_point" "ggplot" "ggtitle" "scale_color_viridis_c" "theme_bw" "theme" "xlab" "ylab"
@@ -20,7 +20,10 @@
 #' mod3 <- fit(dat, data_type="quarterly", fit_type="loess")
 #' plot(mod1)
 #' plot(mod2)
-#' plot(mod3)
+#'
+#' # Invisible returning
+#' p <- plot(mod3)
+#' p + ylab("Temperature Anomaly (Celsius)")
 plot.climr_fit <- function(x, time_grid = pretty(x$data$x, n=100), ...) {
 
   ## Create a nice plot from the output of fit.climr()
@@ -43,7 +46,7 @@ plot.climr_fit <- function(x, time_grid = pretty(x$data$x, n=100), ...) {
                  })
 
   ## Finally, create the plot
-  ggplot(df, aes(x=x, y=temp)) +
+  p <- ggplot(df, aes(x=x, y=temp)) +
     geom_point(aes(colour=temp)) +
     theme_bw() +
     xlab("Year") +
@@ -52,4 +55,6 @@ plot.climr_fit <- function(x, time_grid = pretty(x$data$x, n=100), ...) {
     geom_line(data = fits, aes(x = time_grid, y = pred, colour = pred)) +
     theme(legend.position = "None") +
     scale_color_viridis_c()
+  print(p)
+  invisible(p)
 }
