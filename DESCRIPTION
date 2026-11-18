@@ -1,16 +1,23 @@
-Package: climr
 Type: Package
-Title: What the Package Does (Title Case)
+Package: climr
+Title: Analyse and Plot the Latest Global and Hemispheric Climate Data
 Version: 0.1.0
-Authors@R: c(
-    person(
-      "Jane", "Doe",
-      email = "jane@example.com",
-      role = c("aut", "cre")
-    )
-  )
-Description: More about what it does (maybe more than one line).
-    Continuation lines should be indented.
-License: What license is it under?
+Authors@R: 
+    person("Keefe", "Murphy", , "keefe.murphy@mu.ie", role = c("aut", "cre"))
+Maintainer: Keefe Murphy (keefe.murphy@mu.ie)
+Description: Downloads the latest climate data from NASA at monthly,
+    quarterly, and yearly intervals. Performs basic modelling of said data
+    and creates nice plots of temperature anomalies over time.
+License: GPL (>= 3)
+BugReports: https://github.com/Keefe-Murphy/climr/issues
+Depends: 
+    R (>= 4.6.0)
+Imports: 
+    dplyr,
+    ggplot2,
+    readr,
+    tibble,
+    tidyr,
+    viridis
 Encoding: UTF-8
 LazyData: true
