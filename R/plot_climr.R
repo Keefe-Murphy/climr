@@ -6,7 +6,7 @@
 #' @param time_grid An optional time grid over which to produce fitted values of the model.
 #' @param ... Catches unused arguments to \code{plot} (not currently implemented).
 #'
-#' @return Nothing, just a nice ggplot.
+#' @return Nothing, just a nice ggplot, returned invisibly to enable further modification (see \strong{Examples}).
 #'
 #' @export
 #' @importFrom ggplot2 "ggplot" "aes" "geom_point" "theme_bw" "xlab" "ylab" "ggtitle" "geom_line" "theme" "scale_color_viridis_c"
@@ -17,10 +17,20 @@
 #' dat <- load_climr(type = "SH")
 #' mod1 <- fit(dat)
 #' mod2 <- fit(dat, data_type="monthly", fit_type="smooth.spline")
-#' mod3 <- fit(dat, data_type="quarterly", fit_type="loess")
+#' mod3 <- fit(dat, data_type="quarterly", fit_type="loess", span=0.5, degree=1)
 #' plot(mod1)
 #' plot(mod2)
 #' plot(mod3)
+#'
+#' # Invisible returning
+#' \dontrun{
+#' library(ggplot2)
+#' p <- plot(mod3)
+#' p +
+#'   ylab("Temperature Anomaly (Celsius)") +
+#'   theme_minimal() +
+#'   labs(colour="Temperature Difference")
+#' }
 plot.climr_fit <- function(x, time_grid = pretty(x$data$x, n=100), ...) {
 
   ## Create a nice plot from the output of fit.climr()
@@ -43,7 +53,7 @@ plot.climr_fit <- function(x, time_grid = pretty(x$data$x, n=100), ...) {
                  })
 
   ## Finally, create the plot
-  ggplot2::ggplot(df, ggplot2::aes(x=x, y=temp)) +
+  p <- ggplot2::ggplot(df, ggplot2::aes(x=x, y=temp)) +
     ggplot2::geom_point(ggplot2::aes(colour=temp)) +
     ggplot2::theme_bw() +
     ggplot2::xlab("Year") +
@@ -52,4 +62,6 @@ plot.climr_fit <- function(x, time_grid = pretty(x$data$x, n=100), ...) {
     ggplot2::geom_line(data = fits, ggplot2::aes(x = time_grid, y = pred, colour = pred)) +
     ggplot2::theme(legend.position = "None") +
     ggplot2::scale_color_viridis_c()
+  print(p)
+  invisible(p)
 }
