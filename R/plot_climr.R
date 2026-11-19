@@ -9,6 +9,8 @@
 #' @return Nothing, just a nice ggplot.
 #'
 #' @export
+#' @importFrom ggplot2 "ggplot" "aes" "geom_point" "theme_bw" "xlab" "ylab" "ggtitle" "geom_line" "theme" "scale_color_viridis_c"
+#' @importFrom tidyr "tibble"
 #' @author Keefe Murphy - <\email{keefe.murphy@@mu.ie}>
 #' @seealso \code{\link{fit}}, \code{\link{load_climr}}
 #' @examples
@@ -29,25 +31,25 @@ plot.climr_fit <- function(x, time_grid = pretty(x$data$x, n=100), ...) {
   ## Get some predicted values based on the time grid and fit_type
   fits <- switch(x$fit_type,
                  lm = {
-                   tibble(time_grid, pred=predict(x$model,
-                                                  newdata=tibble(x=time_grid)))
+                   tidyr::tibble(time_grid, pred=stats::predict(x$model,
+                                                                newdata=tidyr::tibble(x=time_grid)))
                  },
                  loess = {
-                   tibble(time_grid, pred=predict(x$model,
-                                                  newdata=tibble(x=time_grid))) |> na.omit()
+                   tidyr::tibble(time_grid, pred=stats::predict(x$model,
+                                                                newdata=tidyr::tibble(x=time_grid))) |> stats::na.omit()
                  },
                  smooth.spline = {
-                   tibble(time_grid, pred=predict(x$model, tibble(time_grid))$y[,1L])
+                   tidyr::tibble(time_grid, pred=stats::predict(x$model, tidyr::tibble(time_grid))$y[,1L])
                  })
 
   ## Finally, create the plot
-  ggplot(df, aes(x=x, y=temp)) +
-    geom_point(aes(colour=temp)) +
-    theme_bw() +
-    xlab("Year") +
-    ylab("Temperature Anomaly") +
-    ggtitle(paste(x$fit_type, "based on", x$data_type, attr(x, "source"), "data")) +
-    geom_line(data = fits, aes(x = time_grid, y = pred, colour = pred)) +
-    theme(legend.position = "None") +
-    scale_color_viridis_c()
+  ggplot2::ggplot(df, ggplot2::aes(x=x, y=temp)) +
+    ggplot2::geom_point(ggplot2::aes(colour=temp)) +
+    ggplot2::theme_bw() +
+    ggplot2::xlab("Year") +
+    ggplot2::ylab("Temperature Anomaly") +
+    ggplot2::ggtitle(paste(x$fit_type, "based on", x$data_type, attr(x, "source"), "data")) +
+    ggplot2::geom_line(data = fits, ggplot2::aes(x = time_grid, y = pred, colour = pred)) +
+    ggplot2::theme(legend.position = "None") +
+    ggplot2::scale_color_viridis_c()
 }

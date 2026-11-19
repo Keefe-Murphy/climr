@@ -53,13 +53,13 @@ fit.climr <- function(obj,
   ## Fit some models
   mod <- switch(fit_type,
                 lm = {
-                  dat |> stats::lm(temp ~ x, data=_, ...)
+                  dat |> stats::lm(temp ~ x, data=_)
                 },
                 loess = {
-                  dat |> stats::loess(temp ~ x, data=_, ...)
+                  dat |> stats::loess(temp ~ x, data=_)
                 },
                 smooth.spline = {
-                  dat |> (\(x) stats::smooth.spline(x$x, x$temp, ...))()
+                  dat |> (\(x) stats::smooth.spline(x$x, x$temp))()
                 })
   print(mod)
 
